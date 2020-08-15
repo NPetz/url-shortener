@@ -1,6 +1,6 @@
 $font-stack: "Fira Code", monospace
 $bg-primary: #a1c4fd
-$gradient:  linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 100%)
+$gradient:  linear-gradient(0deg, #a1c4fd 0%, #c2e9fb 100%)
 $font-primary: #1643a9
 
 body
@@ -10,6 +10,9 @@ body
     color: $font-primary
     background-color: $bg-primary
     background-image: $gradient
+
+button
+    border: none
 
 main
     height: 100%
@@ -45,14 +48,9 @@ main
     border: none
     text-align: center
 
-    &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:active, &:-webkit-autofill:focus
-        background-color: #1643a9
-        color: whitesmoke
-
-
 ::placeholder
     color: whitesmoke
-    opacity: 0.8
+    opacity: 0.5
 
 #copy
     opacity: 0.3
@@ -68,21 +66,34 @@ main
 
 #urlList
     grid-area: c
+    padding-top: 1em
+
+.link
     display: flex
+    flex-direction: row
     flex-wrap: nowrap
-    flex-direction: column
-    justify-content: flex-start
-    padding-top: 1em 
+    justify-content: space-around
+    align-items: center
+    text-align: center
+    margin: 0.5em 0
+
+.icons
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    justify-content: space-evenly
+    align-items: center
+    width: 30%
+
+    i
+        cursor: pointer
+
+.code
+    width: 20%
+
+.path
     overflow: hidden
+    width: 50%
 
-
-    div
-        display: flex
-        flex-wrap: nowrap
-        flex-direction: row
-        justify-content: space-around
-        font-size: 0.8em
-        padding: 0.5em 0
-
-button
-    border: none
+.remove
+    color: rgb(200,40,40 )

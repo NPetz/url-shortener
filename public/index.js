@@ -2,32 +2,43 @@ const shortener = document.getElementById("shortener");
 const deleter = document.getElementById("deleter");
 const urlList = document.getElementById("urlList");
 const formInput = document.getElementById("urlInput");
-const httpsButton = document.getElementById("https")
+const httpsButton = document.getElementById("https");
 
 shortener.addEventListener("submit", (e) => fetchData(e));
 deleter.addEventListener("click", () => deleteAll());
-httpsButton.addEventListener("click",(e)=>{e.preventDefault(); formInput.value = "https://"; console.log('fired button')})
+httpsButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  formInput.value = "https://";
+  console.log("fired button");
+});
 
 document.addEventListener("DOMContentLoaded", () => checkDatabase());
 
+/*
+
 function newCode(e) {
-  let oldId = e.target.parentElement.id;
-  let element = e.target.parentElement.childNodes[3];
+  let oldId = e.target.parentElement.parentElement.id;
+  let element = e.target.parentElement.parentElement.childNodes[1];
   let newId = generateId(3);
   e.target.parentElement.id = newId;
-  element.innerHTML = `/${newId}`
+  element.innerHTML = `/${newId}`;
   element.href = `/${newId}`;
   console.log("new id:", newId);
   fetch("/", {
     method: "POST",
-    body: JSON.stringify({ newId: newId, oldId: oldId, url: window.location.href  }),
+    body: JSON.stringify({
+      newId: newId,
+      oldId: oldId,
+      url: window.location.href,
+    }),
   });
 }
+*/
 
 function generateId(len) {
-  let r = Math.random().toString(36)
-  let length = r.length
-  r = r.substring(length-len,length);
+  let r = Math.random().toString(36);
+  let length = r.length;
+  r = r.substring(length - len, length);
   return r;
 }
 
@@ -55,31 +66,36 @@ function renderElements(array) {
 
     let entry = document.createElement("div");
     entry.id = el.code;
-    entry.className = 'link'
+    entry.className = "link";
 
+    let copy = document.createElement("i");
+    copy.className = "far fa-copy";
+    copy.addEventListener('click',e => copyLink(e))
 
+    /*
+    let random = document.createElement("i");
+    random.className = "new fas fa-redo-alt";
+    random.addEventListener("click", (e) => newCode(e));
+    */
+    let remove = document.createElement("i");
+    remove.className = "remove fas fa-times";
+    remove.addEventListener("click", (e) => removeEl(e));
+
+    let icons = document.createElement("span");
+    icons.className = 'icons'
+    icons.append(remove, copy);
 
     let link = document.createElement("a");
     link.href = el.short;
     link.target = "__blank";
-    link.innerHTML = '/' + el.code;
-
-    let icon = document.createElement("i");
-    icon.className = 'far fa-copy'
+    link.innerHTML = "/" + el.code;
+    link.className ='code'
 
     let path = document.createElement("span");
     path.innerHTML = el.host + el.path;
+    path.className = "path";
 
-
-    let random = document.createElement("i");
-    random.className = 'new fas fa-redo-alt'
-    random.addEventListener("click", (e) => newCode(e));
-
-    let remove = document.createElement("i");
-    remove.className = 'remove fas fa-times'
-    remove.addEventListener("click", (e) => removeEl(e));
-
-    entry.append(remove, random, icon, link, path, );
+    entry.append(icons, link, path);
     urlList.append(entry);
   }
 }
@@ -107,7 +123,7 @@ function fetchData(event) {
     return;
   }
 
-  formInput.value = ''
+  formInput.value = "";
 
   const urlObj = { url: input };
 
@@ -134,7 +150,7 @@ function deleteAll() {
 }
 
 function removeEl(e) {
-  let id = e.target.parentElement.id;
+  let id = e.target.parentElement.parentElement.id;
   console.log(id);
 
   try {
@@ -145,4 +161,16 @@ function removeEl(e) {
   }
 
   fetch("/delete", { method: "POST", body: id });
+}
+
+function copyLink(e) {
+  let link = e.target.parentElement.parentElement.getElementsByClassName("code")[0].href
+  navigator.clipboard.writeText(link)
+  .then(() => {
+    console.log('Text copied to clipboard', link);
+  })
+  .catch(err => {
+    // This can happen if the user denies clipboard permissions:
+    console.error('Could not copy text: ', err);
+  });
 }
