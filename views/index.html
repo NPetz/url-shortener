@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+  />
+  <head>
+    <title>URL Shortener</title>
+    <link href="/public/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="/public/style.css" rel="stylesheet" type="text/css" />
+    <script src="/public/index.js" defer></script>
+  </head>
+
+  <body>
+    <main>
+      <p id="copy">
+        Built with Express, MongoDB, and Sass by
+        <a href="https://github.com/NPetz" target="__blank">NPetz</a>
+      </p>
+      <form id="shortener">
+        <input
+          id="urlInput"
+          name="urlInput"
+          placeholder="enter url to shorten"
+        >
+        <button id='https' type="button">Https</button>
+      </form>
+      
+
+      <section id="urlList"></section>
+      <button id="deleter" style="display: none;">REMOVE ALL</button>
+    </main>
+  </body>
+</html>
