@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.text({}));
 app.use("/public", express.static(process.cwd() + "/public"));
 app.get("/", function (req, res, next) {
-  res.sendFile(process.cwd() + "/views/index.html");
+  res.sendFile(process.cwd() + "/index.html");
 });
 
 // DATABASE SETUP
