@@ -61,7 +61,9 @@ app.post("/database", function (req, res) {
 // generate random string
 
 function generateId(len) {
-  let r = Math.random().toString(36).substring(len);
+  let r = Math.random().toString(36)
+  let length = r.length
+  r = r.substring(length-len,length);
   return r;
 }
 
@@ -103,7 +105,7 @@ app.post(
 
   function (req, res) {
     const fullUrl = req.protocol + "://" + req.get("host") + "/";
-    const hash = generateId(5);
+    const hash = generateId(3);
     const shortened_url = fullUrl + hash;
 
     const url = new URL(res.locals.url);

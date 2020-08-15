@@ -89,17 +89,4 @@ button {
   border: none;
 }
 
-.link {
-  text-align: center;
-}
-.link button {
-  display: none;
-}
-.link span {
-  display: none;
-}
-.link:hover button {
-  display: block;
-}
-
 /*# sourceMappingURL=style.css.map */

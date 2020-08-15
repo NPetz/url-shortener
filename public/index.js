@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", () => checkDatabase());
 
 function newCode(e) {
   let oldId = e.target.parentElement.id;
-  let element = e.target.parentElement.childNodes[1];
-  let newId = generateId(5);
+  let element = e.target.parentElement.childNodes[3];
+  let newId = generateId(3);
   e.target.parentElement.id = newId;
-  element.innerHTML = window.location.href + newId;
+  element.innerHTML = `/${newId}`
   element.href = `/${newId}`;
   console.log("new id:", newId);
   fetch("/", {
@@ -25,7 +25,9 @@ function newCode(e) {
 }
 
 function generateId(len) {
-  let r = Math.random().toString(36).substring(len);
+  let r = Math.random().toString(36)
+  let length = r.length
+  r = r.substring(length-len,length);
   return r;
 }
 
@@ -55,27 +57,29 @@ function renderElements(array) {
     entry.id = el.code;
     entry.className = 'link'
 
+
+
     let link = document.createElement("a");
     link.href = el.short;
     link.target = "__blank";
-    link.innerHTML = el.short;
+    link.innerHTML = '/' + el.code;
 
-    let host = document.createElement("span");
-    host.innerHTML = el.host;
+    let icon = document.createElement("i");
+    icon.className = 'far fa-copy'
 
     let path = document.createElement("span");
-    path.innerHTML = el.path;
+    path.innerHTML = el.host + el.path;
 
-    let random = document.createElement("button");
-    random.innerHTML = "new";
-    random.className = 'new'
+
+    let random = document.createElement("i");
+    random.className = 'new fas fa-redo-alt'
     random.addEventListener("click", (e) => newCode(e));
 
-    let remove = document.createElement("button");
-    remove.innerHTML = "remove";
+    let remove = document.createElement("i");
+    remove.className = 'remove fas fa-times'
     remove.addEventListener("click", (e) => removeEl(e));
 
-    entry.append(random, link, host, path, remove);
+    entry.append(remove, random, icon, link, path, );
     urlList.append(entry);
   }
 }
