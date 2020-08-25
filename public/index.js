@@ -1,16 +1,10 @@
 const shortener = document.getElementById("shortener");
-const deleter = document.getElementById("deleter");
+
 const urlList = document.getElementById("urlList");
 const formInput = document.getElementById("urlInput");
-const httpsButton = document.getElementById("https");
 
 shortener.addEventListener("submit", (e) => fetchData(e));
-deleter.addEventListener("click", () => deleteAll());
-httpsButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  formInput.value = "https://";
-  console.log("fired button");
-});
+
 
 document.addEventListener("DOMContentLoaded", () => checkDatabase());
 
@@ -81,7 +75,7 @@ function renderElements(array) {
     remove.className = "remove fas fa-times";
     remove.addEventListener("click", (e) => removeEl(e));
 
-    let icons = document.createElement("span");
+    let icons = document.createElement("div");
     icons.className = 'icons'
     icons.append(remove, copy);
 
@@ -91,11 +85,11 @@ function renderElements(array) {
     link.innerHTML = "/" + el.code;
     link.className ='code'
 
-    let path = document.createElement("span");
+    let path = document.createElement("p");
     path.innerHTML = el.host + el.path;
     path.className = "path";
 
-    entry.append(icons, link, path);
+    entry.append( link, path, icons);
     urlList.append(entry);
   }
 }
@@ -144,10 +138,6 @@ function fetchData(event) {
     });
 }
 
-function deleteAll() {
-  urlList.innerHTML = "";
-  fetch("/delete", { method: "POST", body: "" });
-}
 
 function removeEl(e) {
   let id = e.target.parentElement.parentElement.id;
