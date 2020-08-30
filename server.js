@@ -1,12 +1,11 @@
 "use strict";
-require('dotenv').config()
-var express = require("express");
-var mongo = require("mongodb");
-var mongoose = require("mongoose");
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-var cors = require("cors");
-var app = express();
-var port = process.env.PORT || 3000;
+const cors = require("cors");
+const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.text({}));
@@ -17,7 +16,13 @@ app.get("/", function (req, res, next) {
 
 // DATABASE SETUP
 
-mongoose.connect(process.env.DB_URI);
+mongoose
+  .connect(process.env.DB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("DB Connected"))
+  .catch((e) => console.log(`DB Error: ${e.message}`));
 const Schema = mongoose.Schema;
 const linkSchema = new Schema({
   long: String,
@@ -37,7 +42,7 @@ const createEntry = function (data) {
     code: data.code,
   });
 
-  entry.save(function (err, url) {
+  entry.save(function (err, _) {
     if (err) {
       console.log(err);
     }
@@ -61,9 +66,9 @@ app.post("/database", function (req, res) {
 // generate random string
 
 function generateId(len) {
-  let r = Math.random().toString(36)
-  let length = r.length
-  r = r.substring(length-len,length);
+  let r = Math.random().toString(36);
+  let length = r.length;
+  r = r.substring(length - len, length);
   return r;
 }
 
@@ -79,7 +84,7 @@ app.post(
           code: body.newId,
           short: `${body.url}${body.newId}`,
         },
-        function (err, res) {}
+        function (err, res) { }
       );
       res.end();
     } else {
@@ -132,9 +137,9 @@ app.post("/delete", function (req, res) {
   if (req.body) {
     let id = req.body;
     console.log(id);
-    LINK.deleteOne({ code: id }, function (err, data) {});
+    LINK.deleteOne({ code: id }, function (err, data) { });
   } else {
-    LINK.deleteMany({}, function (err, data) {});
+    LINK.deleteMany({}, function (err, data) { });
   }
 });
 

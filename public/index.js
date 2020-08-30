@@ -64,7 +64,7 @@ function renderElements(array) {
 
     let copy = document.createElement("i");
     copy.className = "far fa-copy";
-    copy.addEventListener('click',e => copyLink(e))
+    copy.addEventListener('click', e => copyLink(e))
 
     /*
     let random = document.createElement("i");
@@ -79,18 +79,28 @@ function renderElements(array) {
     icons.className = 'icons'
     icons.append(remove, copy);
 
+    let shortLink = document.createElement("span")
+    shortLink.innerHTML = el.short.slice(0, el.short.length - 4)
+
     let link = document.createElement("a");
     link.href = el.short;
     link.target = "__blank";
     link.innerHTML = "/" + el.code;
-    link.className ='code'
+    link.className = 'code'
+    link.prepend(shortLink)
 
-    let path = document.createElement("p");
-    path.innerHTML = el.host + el.path;
+    let iconsLink = document.createElement('div');
+    iconsLink.className = 'iconsLink'
+    iconsLink.append(icons, link)
+
+    let path = document.createElement("div");
+    let content = document.createElement("p");
+    content.innerHTML = el.long
+    path.append(content)
     path.className = "path";
 
-    entry.append( link, path, icons);
-    urlList.append(entry);
+    entry.append(path, iconsLink);
+    urlList.prepend(entry);
   }
 }
 
@@ -140,7 +150,7 @@ function fetchData(event) {
 
 
 function removeEl(e) {
-  let id = e.target.parentElement.parentElement.id;
+  let id = e.target.parentElement.parentElement.parentElement.id;
   console.log(id);
 
   try {
@@ -156,11 +166,11 @@ function removeEl(e) {
 function copyLink(e) {
   let link = e.target.parentElement.parentElement.getElementsByClassName("code")[0].href
   navigator.clipboard.writeText(link)
-  .then(() => {
-    console.log('Text copied to clipboard', link);
-  })
-  .catch(err => {
-    // This can happen if the user denies clipboard permissions:
-    console.error('Could not copy text: ', err);
-  });
+    .then(() => {
+      console.log('Text copied to clipboard', link);
+    })
+    .catch(err => {
+      // This can happen if the user denies clipboard permissions:
+      console.error('Could not copy text: ', err);
+    });
 }
